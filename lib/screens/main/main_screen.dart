@@ -1,12 +1,12 @@
 import 'package:everyday/screens/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _HomeState();
+  State<StatefulWidget> createState() => _MainState();
 }
 
-class _HomeState extends State<HomeScreen> {
+class _MainState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
