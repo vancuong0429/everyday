@@ -4,7 +4,10 @@ class CustomAppBar extends StatefulWidget {
   double height;
   double iconSize;
   List<AppBarItem> items = new List();
-  CustomAppBar({this.height, this.iconSize, this.items});
+  ValueChanged navigationTapped;
+
+  CustomAppBar({this.height, this.iconSize, this.items, this.navigationTapped});
+
   @override
   State<StatefulWidget> createState() => _CustomAppBarState();
 }
@@ -13,6 +16,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   int _selectedIndex = 0;
 
   _updateIndex(int index) {
+    widget.navigationTapped(index);
     setState(() {
       _selectedIndex = index;
     });
@@ -37,7 +41,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
   Widget _buildTapItem({AppBarItem appBarItem, int index, ValueChanged<int> onPressed}){
     String icon = _selectedIndex == index ? appBarItem.iconSelected : appBarItem.iconNormal;
-    print(_selectedIndex.toString() +  "__" + index.toString());
     return Expanded(
       child: SizedBox(
         height: widget.height,

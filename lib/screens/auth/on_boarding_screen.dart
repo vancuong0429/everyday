@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:page_indicator/page_indicator.dart';
 import 'package:everyday/screens/widgets/on_boarding_one.dart';
 
-import 'home_screen.dart';
+import 'package:everyday/screens/main/main_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget{
   @override
@@ -57,7 +57,7 @@ class _OnBoardingState extends State<OnBoardingScreen>{
                     height: 48,
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +80,7 @@ class _OnBoardingState extends State<OnBoardingScreen>{
                     height: 48,
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

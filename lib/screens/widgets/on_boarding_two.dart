@@ -13,6 +13,7 @@ class _OnBoardingTwoState extends State<OnBoardingScreenTwo>{
   Widget build(BuildContext context) {
     // TODO: implement build
     heightScreen = MediaQuery.of(context).size.height;
+    print("_OnBoardingTwoState");
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
