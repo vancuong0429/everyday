@@ -1,3 +1,4 @@
+import 'package:everyday/screens/main/calendar_screen.dart';
 import 'package:everyday/screens/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:everyday/screens/main/home_screen.dart';
@@ -27,34 +28,12 @@ class _MainState extends State<MainScreen> with AutomaticKeepAliveClientMixin<Ma
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-
-//      bottomNavigationBar: BottomNavigationBar(
-//        items: [
-//          new BottomNavigationBarItem(
-//              icon: new Icon(Icons.map),
-//              title: new Text("Lorem")
-//          ),
-//          new BottomNavigationBarItem(
-//              icon: new Icon(Icons.pin_drop),
-//              title: new Text("Borem")
-//          ),
-//          new BottomNavigationBarItem(
-//              icon: new Icon(Icons.people),
-//              title: new Text("Ipsum")
-//          )
-//        ],
-//        currentIndex: _page,
-//        onTap: (index) {
-//          navigationTapped(index);
-//        },
-//
-//      ),
         body: new PageView(
             onPageChanged: onPageChanged,
             controller: _pageController,
             children: <Widget>[
               HomeScreen(),
-              new Container(color: Colors.yellow),
+              CalendarScreen(),
               new Container(color: Colors.blue)
             ]
         ),
