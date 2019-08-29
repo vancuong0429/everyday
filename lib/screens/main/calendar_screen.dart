@@ -21,6 +21,7 @@ class _CalendarState extends State<CalendarScreen> {
     _markedDateMap.add(DateTime(2019, 8, 3), null);
     return Scaffold(
       body: Container(
+        color: Color(0xFFF5F5F5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -33,18 +34,21 @@ class _CalendarState extends State<CalendarScreen> {
                 padding: EdgeInsets.only(top: 24),
                 child: getHeaderCalendar()),
             Expanded(
-              child: CalendarCarousel(
-                thisMonthDayBorderColor: Colors.grey,
-                daysHaveCircularBorder: null,
-                onDayPressed: (DateTime date, List) {
-                  this.setState(() => _currentDate = date);
-                },
-                selectedDateTime: _currentDate,
-                selectedDayButtonColor: Color(0xFFFC8B7D),
-                markedDatesMap: _markedDateMap,
-                daysTextStyle: TextStyle(fontSize: 14, color: Color(0xFF666666)),
-                weekendTextStyle: TextStyle(fontSize: 14, color: Color(0xFF666666)),
-                headerTextStyle: TextStyle(fontSize: 16, color: Color(0xFF809EFD)),
+              child: Container(
+                color: Colors.white,
+                child: CalendarCarousel(
+                  thisMonthDayBorderColor: Colors.grey,
+                  daysHaveCircularBorder: null,
+                  onDayPressed: (DateTime date, List) {
+                    this.setState(() => _currentDate = date);
+                  },
+                  selectedDateTime: _currentDate,
+                  selectedDayButtonColor: Color(0xFFFC8B7D),
+                  markedDatesMap: _markedDateMap,
+                  daysTextStyle: TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                  weekendTextStyle: TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                  headerTextStyle: TextStyle(fontSize: 16, color: Color(0xFF809EFD)),
+                ),
               ),
             ),
             Container(
@@ -53,8 +57,8 @@ class _CalendarState extends State<CalendarScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(4)),
                 border: Border.all(
-                  color: Color(0xFF97979),
-                  width: 1
+                  color: Color(0xFF979797),
+                  width: 0
                 )
               ),
               child: Row(

@@ -1,4 +1,6 @@
 import 'package:everyday/screens/main/calendar_screen.dart';
+import 'package:everyday/screens/main/discover_screen.dart';
+import 'package:everyday/screens/main/profile_screen.dart';
 import 'package:everyday/screens/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:everyday/screens/main/home_screen.dart';
@@ -29,12 +31,14 @@ class _MainState extends State<MainScreen> with AutomaticKeepAliveClientMixin<Ma
     // TODO: implement build
     return Scaffold(
         body: new PageView(
+          physics: NeverScrollableScrollPhysics(),
             onPageChanged: onPageChanged,
             controller: _pageController,
             children: <Widget>[
               HomeScreen(),
               CalendarScreen(),
-              new Container(color: Colors.blue)
+              DiscoverScreen(),
+              ProfileScreen()
             ]
         ),
       floatingActionButton: new FloatingActionButton(
