@@ -1,3 +1,4 @@
+import 'package:everyday/main.dart';
 import 'package:flutter/material.dart';
 
 
@@ -96,12 +97,22 @@ Widget getItemDiscover() {
       ),
     margin: EdgeInsets.only(left: 16, right: 16),
     child: Padding(
-      padding: const EdgeInsets.all(19.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Soaring in the Destiny", style: TextStyle(fontSize: 16, color: Color(0xFF666666)),),
-          Text("03:02PM  | Christina Munoz", style: TextStyle(fontSize: 12, color: Color(0xFF999999))),
+          CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage("https://miro.medium.com/fit/c/64/64/0*BbEuop6sy9fSc9tD."),
+          ),
+          SizedBox(width: 15,),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text("Soaring in the Destiny", style: TextStyle(fontSize: 16, color: Color(0xFF666666)),),
+              Text("03:02PM  | Christina Munoz", style: TextStyle(fontSize: 12, color: Color(0xFF999999))),
+            ],
+          ),
         ],
       ),
     ),

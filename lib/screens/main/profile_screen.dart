@@ -8,16 +8,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    var linearGradient = const BoxDecoration(
-      gradient: const LinearGradient(
-        begin: FractionalOffset.centerRight,
-        end: FractionalOffset.bottomLeft,
-        colors: <Color>[
-          const Color(0xFF413070),
-          const Color(0xFF2B264A),
-        ],
-      ),
-    );
     return Scaffold(
       body: Container(
         color: Color(0xFFF5F5F5),
@@ -26,84 +16,7 @@ class _ProfileState extends State<ProfileScreen> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                height: 400,
-                child: Stack(
-                  children: <Widget>[
-                    ClipPath(
-                      clipper: CustomClip(),
-                      child: Container(
-                          alignment: Alignment(-1,-1),
-                          height: 200,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [Color(0xFFFA508C), Color(0xFFFFC86E)],
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight)),
-                          padding: EdgeInsets.only(top: 24),
-                          child: getHeaderDiscover()),
-                    ),
-                    Positioned(
-                        top: 140,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 260,
-                          child: ClipPath(
-                            clipper: CustomClipTop(),
-                            child: Container(
-                              color: Colors.white,
-                              padding: EdgeInsets.only(top: 92),
-                              child: Column(
-                                children: <Widget>[
-                                  Text("Rejo Varghese", style: TextStyle(color: Color(0xFF666666), fontSize: 24),),
-                                  SizedBox(height: 14,),
-                                  Text("There is only one happiness in this life,\nto love and be loved.",
-                                    style: TextStyle(color: Color(0xFFBBBBBB), fontSize: 14, fontStyle: FontStyle.italic), maxLines: 2,
-                                    textAlign: TextAlign.center,),
-                                  SizedBox(height: 28,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Text("143", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
-                                          Text("POSTS", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                      Container(
-                                        width: 1,
-                                        height: 34,
-                                        color: Color(0xFFD8D8D8),
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text("525", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
-                                          Text("FOLLOWERS", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                      Container(
-                                        width: 1,
-                                        height: 34,
-                                        color: Color(0xFFD8D8D8),
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text("348", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
-                                          Text("FOLLOWING", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ))
-                  ],
-                ),
-              ),
+              profileHeader(),
               Expanded(
                 child: GridView.count(crossAxisCount: 3,
                 padding: EdgeInsets.all(8),
@@ -216,6 +129,108 @@ class CustomClipTop extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
+Widget profileHeader() {
+
+  return Container(
+    width: double.infinity,
+    height: 400,
+    child: Stack(
+      children: <Widget>[
+        ClipPath(
+          clipper: CustomClip(),
+          child: Container(
+              alignment: Alignment(-1,-1),
+              height: 200,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFFFA508C), Color(0xFFFFC86E)],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight)),
+              padding: EdgeInsets.only(top: 24),
+              child: toolbarProfile()),
+        ),
+        Positioned(
+            top: 140,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 260,
+              child: ClipPath(
+                clipper: CustomClipTop(),
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(top: 92),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Rejo Varghese", style: TextStyle(color: Color(0xFF666666), fontSize: 24),),
+                      SizedBox(height: 14,),
+                      Text("There is only one happiness in this life,\nto love and be loved.",
+                        style: TextStyle(color: Color(0xFFBBBBBB), fontSize: 14, fontStyle: FontStyle.italic), maxLines: 2,
+                        textAlign: TextAlign.center,),
+                      SizedBox(height: 28,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Text("143", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
+                              Text("POSTS", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 34,
+                            color: Color(0xFFD8D8D8),
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text("525", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
+                              Text("FOLLOWERS", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 34,
+                            color: Color(0xFFD8D8D8),
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text("348", style: TextStyle(color: Color(0xFF666666), fontSize: 22, fontWeight: FontWeight.bold),),
+                              Text("FOLLOWING", style: TextStyle(color: Color(0xFF999999), fontSize: 11, fontWeight: FontWeight.bold),)
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )),
+        Align(
+          alignment: Alignment(0,-0.2),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Color(0x4DFFFFFF), width: 8),
+            ),
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage("https://miro.medium.com/fit/c/64/64/0*BbEuop6sy9fSc9tD.")
+                )
+              ),
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
 Widget getItemDiscover() {
   return Container(
     decoration: BoxDecoration(
@@ -240,7 +255,7 @@ Widget getItemDiscover() {
   );
 }
 
-Widget getHeaderDiscover() {
+Widget toolbarProfile() {
   return Row(
     children: <Widget>[
       SizedBox(
