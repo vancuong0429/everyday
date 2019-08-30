@@ -63,9 +63,9 @@ class Choice {
 
 const List<Choice> choices = const <Choice>[
   const Choice(title: 'Favourites', icon: "assets/ic_favorite.png"),
-  const Choice(title: 'My Map', icon: "assets/ic_my_map.png"),
+  const Choice(title: 'My Map', icon: "assets/ic_my_map_selected.png"),
   const Choice(title: 'Drafts', icon: "assets/ic_drafts.png"),
-  const Choice(title: 'Photos', icon: "assets/ic_photo.png"),
+  const Choice(title: 'Photos', icon: "assets/ic_photo_selected.png"),
   const Choice(title: 'Videos', icon: "assets/ic_movie_creation.png"),
   const Choice(title: 'Statics', icon: "assets/ic_insert_chart.png"),
 ];

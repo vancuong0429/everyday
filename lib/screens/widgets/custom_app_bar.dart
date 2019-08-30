@@ -27,7 +27,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
     List<Widget> items = List.generate(widget.items.length, (int index) {
       return _buildTapItem(appBarItem: widget.items[index], index: index, onPressed: _updateIndex);
     });
-    items.insert(items.length >> 1, SizedBox( height: widget.height, width: widget.iconSize,));
+    if (items.length %2 == 0) {
+      items.insert(items.length >> 1, SizedBox( height: widget.height, width: widget.iconSize,));
+    }
     return BottomAppBar(
       color: Colors.white,
       shape: CircularNotchedRectangle(),

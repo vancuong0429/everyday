@@ -1,5 +1,6 @@
 import 'package:everyday/screens/main/calendar_screen.dart';
 import 'package:everyday/screens/main/discover_screen.dart';
+import 'package:everyday/screens/main/new_post_screen.dart';
 import 'package:everyday/screens/main/profile_screen.dart';
 import 'package:everyday/screens/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,9 @@ class _MainState extends State<MainScreen> with AutomaticKeepAliveClientMixin<Ma
       floatingActionButton: new FloatingActionButton(
         child: Image.asset("assets/ic_add.png"),
         backgroundColor: Color(0xFF82A0FA),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewPostScreen()));
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomAppBar(height: 48, iconSize: 24, items: [
