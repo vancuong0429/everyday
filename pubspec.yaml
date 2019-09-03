@@ -29,6 +29,7 @@ dev_dependencies:
     sdk: flutter
   page_indicator: 0.3.0
   flutter_calendar_carousel: 1.3.18
+  multi_image_picker: 4.5.2
 
 
 # For information on the generic Dart part of this file, see the
