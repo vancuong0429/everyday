@@ -181,16 +181,23 @@ class _NewPostState extends State<NewPostScreen> {
     );
   }
 
+  closeDialog() {
+    print("closeDialog");
+    this.setState(() {
+      showDialog = 0;
+    });
+  }
+
   Widget getDialog(int showDialog) {
     var widget;
     if (showDialog == 0) {
       widget = Container();
     } else if (showDialog == 1) {
-      widget = SelectDateDialog();
+      widget = SelectDateDialog(clearDialog: closeDialog,);
     } else if (showDialog == 2) {
-      widget = AddLocationDialog();
+      widget = AddLocationDialog(clearDialog: closeDialog,);
     }else if (showDialog == 3) {
-      widget = AddPhotoDialog();
+      widget = AddPhotoDialog(clearDialog: closeDialog,);
     }
 
     return Visibility(

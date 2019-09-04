@@ -5,6 +5,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 
 class SelectDateDialog extends StatefulWidget{
+  Function clearDialog;
+  SelectDateDialog({this.clearDialog});
+
   @override
   State<StatefulWidget> createState() => _SelectDateState();
 
@@ -52,6 +55,9 @@ class _SelectDateState extends State<SelectDateDialog>{
                             child: SizedBox(
                               child: Image.asset("assets/ic_clear.png"),
                             ),
+                            onTap: () {
+                              widget.clearDialog();
+                            },
                           ),
                         ),
                       )

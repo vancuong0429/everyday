@@ -1,4 +1,5 @@
 import 'package:everyday/screens/main/home_screen.dart';
+import 'package:everyday/screens/main/personal_post_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
@@ -61,31 +62,32 @@ class _CalendarState extends State<CalendarScreen> {
                   width: 0
                 )
               ),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
+              child: FlatButton(
+                child: Row(
+                  children: <Widget>[
+                    Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text("03", style: TextStyle(fontSize: 28, color: Color(0xFF82A0FA), fontWeight: FontWeight.bold)),
                         Text("JAN", style: TextStyle(fontSize: 12, color: Color(0xFF82A0FA), fontWeight: FontWeight.bold)),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(19.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("A slow but sure start.", style: TextStyle(fontSize: 16, color: Color(0xFF666666)),),
-                          Text("Tuesday, 11:30 AM", style: TextStyle(fontSize: 12, color: Color(0xFF999999))),
-                        ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(19.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("A slow but sure start.", style: TextStyle(fontSize: 16, color: Color(0xFF666666)),),
+                            Text("Tuesday, 11:30 AM", style: TextStyle(fontSize: 12, color: Color(0xFF999999))),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ), onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalPostViewScreen()));
+              },
               ),
             ),
             SizedBox(height: 38,)

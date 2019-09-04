@@ -60,6 +60,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_maps_flutter:
+    dependency: "direct dev"
+    description:
+      name: google_maps_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.21"
+  image_picker_modern:
+    dependency: "direct dev"
+    description:
+      name: image_picker_modern
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.12+3"
   intl:
     dependency: transitive
     description:
@@ -81,13 +95,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  multi_image_picker:
-    dependency: "direct dev"
-    description:
-      name: multi_image_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.5.2"
   page_indicator:
     dependency: "direct dev"
     description:
@@ -109,6 +116,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  permission_handler:
+    dependency: "direct dev"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   quiver:
     dependency: transitive
     description:
@@ -135,6 +149,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
+  storage_path:
+    dependency: "direct dev"
+    description:
+      name: storage_path
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.9"
   stream_channel:
     dependency: transitive
     description:
@@ -179,4 +200,4 @@ packages:
     version: "2.0.8"
 sdks:
   dart: ">=2.2.2 <3.0.0"
-  flutter: ">=1.7.8 <2.0.0"
+  flutter: ">=1.5.0 <2.0.0"

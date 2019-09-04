@@ -2,16 +2,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+class AddLocation {
+  const AddLocation({this.lat, this.lng, this.place});
 
+  final double lat;
+  final double lng;
+  final String place;
+}
+
+const List<AddLocation> addLocations = const <AddLocation>[
+  const AddLocation(lat: 0, lng: 0, place: "Mumbai"),
+  const AddLocation(lat: 0, lng: 0, place: "New Delhi"),
+  const AddLocation(lat: 0, lng: 0, place: "Ladhak"),
+  const AddLocation(lat: 0, lng: 0, place: "Nagpur"),
+  const AddLocation(lat: 0, lng: 0, place: "HoChiMinh"),
+  const AddLocation(lat: 0, lng: 0, place: "HaNoi"),
+  const AddLocation(lat: 0, lng: 0, place: "Mumbai"),
+];
 
 class AddLocationDialog extends StatefulWidget{
+  Function clearDialog;
+
+  AddLocationDialog({Key key, this.clearDialog}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _AddLocationState();
 
 }
 
-class _AddLocationState extends State<AddLocationDialog>{
-  DateTime _currentDate = DateTime.now();
+class _AddLocationState extends State<AddLocationDialog> with AutomaticKeepAliveClientMixin<AddLocationDialog>{
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+  static final CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -52,6 +82,9 @@ class _AddLocationState extends State<AddLocationDialog>{
                             child: SizedBox(
                               child: Image.asset("assets/ic_clear.png"),
                             ),
+                            onTap: () {
+                              widget.clearDialog();
+                            },
                           ),
                         ),
                       )
@@ -66,11 +99,25 @@ class _AddLocationState extends State<AddLocationDialog>{
                     child: Stack(
                       children: <Widget>[
                         Positioned(
+                          left: 0,
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: GoogleMap(
+                            mapType: MapType.normal,
+                            initialCameraPosition: _kGooglePlex,
+                            onMapCreated: (GoogleMapController controller) {
+
+                            },
+                          ),
+                        ),
+                        Positioned(
                           child: Container(
                             height: 44,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(4)),
-                              border: Border.all(color: Color(0x1A000000))
+                              border: Border.all(color: Color(0x1A000000)),
+                              color: Colors.white
                             ),
                             margin: EdgeInsets.only(top: 16, left: 16, right: 16),
                             child: Row(
@@ -95,18 +142,9 @@ class _AddLocationState extends State<AddLocationDialog>{
                                 return SizedBox(width: 10,);
                               },
                               itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(left: index == 0 ? 16 : 0, right: index == 9 ? 16 : 0),
-                                  child: Text('Hamilton', style: TextStyle(color: Color(0xFF82A0FA), fontSize: 14),),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: Color(0xFF82A0FA), width: 1)
-                                ),
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.only(left: 16, right: 16),
-                              );
+                              return getItemPlace(index);
                             },
-                            itemCount: 10,
+                            itemCount: addLocations.length,
                               scrollDirection: Axis.horizontal,
                             ),
                           )
@@ -122,5 +160,22 @@ class _AddLocationState extends State<AddLocationDialog>{
       ),
     );
   }
+
+  Widget getItemPlace(int index) {
+    return Container(
+      margin: EdgeInsets.only(left: index == 0 ? 16 : 0, right: index == (addLocations.length - 1) ? 16 : 0),
+      child: Text(addLocations[index].place, style: TextStyle(color: Color(0xFF82A0FA), fontSize: 14),),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Color(0xFF82A0FA), width: 1),
+        color: Colors.white,
+      ),
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(left: 16, right: 16),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }
