@@ -1,3 +1,5 @@
+import 'package:everyday/screens/main/darfs_screen.dart';
+import 'package:everyday/screens/main/maps_screen.dart';
 import 'package:everyday/screens/main/photos_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -82,6 +84,12 @@ class ChoiceCard extends StatelessWidget {
     return InkResponse(
       onTap: () {
         switch(index) {
+          case 1:
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MapsScreen()));
+            break;
+          case 2:
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DraftsScreen()));
+            break;
           case 3:
             Navigator.push(context, MaterialPageRoute(builder: (context) => PhotosScreen()));
             break;
