@@ -1,4 +1,4 @@
-import 'package:everyday/screens/main/darfs_screen.dart';
+import 'package:everyday/screens/main/drafts_screen.dart';
 import 'package:everyday/screens/main/maps_screen.dart';
 import 'package:everyday/screens/main/photos_screen.dart';
 import 'package:flutter/material.dart';
