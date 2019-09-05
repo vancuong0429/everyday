@@ -1,3 +1,4 @@
+import 'package:everyday/screens/main/photos_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _ProfileState extends State<ProfileScreen> {
                 padding: EdgeInsets.all(8),
                 children: List.generate(choices.length, (index) {
                   return Center(
-                    child: ChoiceCard(choice: choices[index],),
+                    child: ChoiceCard(choice: choices[index], index: index,),
                   );
                 },),shrinkWrap: true,),
               )
@@ -72,14 +73,19 @@ const List<Choice> choices = const <Choice>[
 
 
 class ChoiceCard extends StatelessWidget {
-  const ChoiceCard({Key key, this.choice}) : super(key: key);
+  const ChoiceCard({Key key, this.choice, this.index}) : super(key: key);
   final Choice choice;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
       onTap: () {
-        print(this.choice.title);
+        switch(index) {
+          case 3:
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PhotosScreen()));
+            break;
+        }
       },
       child: Card(
           color: Colors.white,
