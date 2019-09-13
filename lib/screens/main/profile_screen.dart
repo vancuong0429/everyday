@@ -127,6 +127,34 @@ class CustomClip extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
+class CustomText extends CustomClipper<Path>{
+  @override
+  Path getClip(Size size) {
+    // TODO: implement getClip
+    Path path = Path();
+    var width = 130.0;
+    var height = 150.0 - 20;
+    var radius = 10.0;
+    path.moveTo(0, radius);
+    path.arcToPoint(Offset(radius, 0),clockwise: true, radius: Radius.circular(radius));
+
+    path.lineTo(width - radius, 0);
+    path.arcToPoint(Offset(width, radius),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo(width, height - radius);
+    path.arcToPoint(Offset(width - radius, height),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo((3 * width / 5), height);
+    path.lineTo(width / 2, height + 20);
+    path.lineTo((2 * width / 5), height);
+    path.lineTo(radius, height);
+    path.arcToPoint(Offset(0, height - radius),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo(0, radius);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
 class CustomClipTop extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -169,8 +197,9 @@ Widget profileHeader() {
             right: 0,
             child: Container(
               height: 260,
+              padding: EdgeInsets.all(10),
               child: ClipPath(
-                clipper: CustomClipTop(),
+                clipper: CustomText(),
                 child: Container(
                   color: Colors.white,
                   padding: EdgeInsets.only(top: 92),

@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PostMap {
@@ -27,7 +31,6 @@ class MapsScreen extends StatefulWidget {
 }
 
 class _MapsState extends State<MapsScreen> {
-  GlobalKey _globalKey = new GlobalKey();
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(10.8052611, 106.6290739),
     zoom: 14.4746,
@@ -35,39 +38,168 @@ class _MapsState extends State<MapsScreen> {
   Map<String, Marker> _markers = {};
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Color(0xFFF5F5F5),
-        child: Column(
-          children: <Widget>[
-            Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFFFA508C), Color(0xFFFFC86E)],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight)),
-                padding: EdgeInsets.only(top: 24),
-                child: getHeaderDrafts(context)),
-            Expanded(
-              child: GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: _kGooglePlex,
-                onMapCreated: _onMapCreated,
-                markers: _markers.values.toSet(),
-              ),
-            )
-          ],
+    return RepaintBoundary(
+      child: Scaffold(
+        body: Container(
+          color: Color(0xFFF5F5F5),
+          child: Column(
+            children: <Widget>[
+              Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Color(0xFFFA508C), Color(0xFFFFC86E)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight)),
+                  padding: EdgeInsets.only(top: 24),
+                  child: getHeaderDrafts(context)),
+              Expanded(
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: _onMapCreated,
+                  markers: _markers.values.toSet(),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _onMapCreated(GoogleMapController controller) async {
+  Future<prefix0.Image> loadAsset(String path) async {
+    return await Image(image: AssetImage(path),);
+  }
+
+  Future<ByteData> customBusMarkerData(
+      String assetImagePath, String busNumber) async {
+//    final Offset imageOffset =
+//    Offset(18.0 + (2.5 * (busNumber.length - 1.0)), 50);
+    final Offset textOffset =
+    Offset(39.5 - (12.75 * (busNumber.length - 1.0)), 0.0);
+
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+
+    final Canvas canvas = Canvas(recorder);
+
+//    final Paint imagePaint = Paint()
+//      ..isAntiAlias = true
+//      ..filterQuality = FilterQuality.high;
+
+    final Paint rectPaint = Paint()
+      ..color = Colors.white
+      ..isAntiAlias = true
+      ..style = PaintingStyle.fill
+      ..filterQuality = FilterQuality.high;
+
+    final Paint rectOutlinePaint = Paint()
+      ..color = Colors.red
+      ..isAntiAlias = true
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 5
+      ..strokeCap = ui.StrokeCap.round
+      ..filterQuality = FilterQuality.high;
+
+    final TextSpan textSpan = TextSpan(
+      style: const TextStyle(
+          color: Color(0xFF82A0FA), fontSize: 28, fontWeight: FontWeight.bold),
+      text: busNumber,
+    );
+    final TextPainter textPainter = TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center);
+//    final ui.Image image =
+
+//    final Size sourceImageSize =
+//    Size(50, 50);
+//    final Size wantedImageSize = sourceImageSize * 1.5;
+//
+//    final ui.Rect inputRect = Offset.zero & sourceImageSize;
+//    final ui.Rect outputRect = imageOffset & wantedImageSize;
+//
+//    final FittedSizes sizes =
+//    applyBoxFit(BoxFit.contain, sourceImageSize, wantedImageSize);
+
+//    final Rect inputSubrect = Alignment.center.inscribe(sizes.source, inputRect);
+//
+//    final Rect outputSubrect =
+//    Alignment.center.inscribe(sizes.destination, outputRect);
+
+//    canvas.drawRRect(
+//        RRect.fromLTRBAndCorners(
+//          0.0,
+//          0.0,
+//          105.0 + (busNumber.length * 5.75),
+//          120.0,
+//          bottomRight: const Radius.circular(25),
+//          topLeft: const Radius.circular(25),
+//        ),
+//        rectPaint);
+
+    Path path = Path();
+    var width = 130.0;
+    var height = 150.0 - 20;
+    var radius = 10.0;
+    path.moveTo(0, radius);
+    path.arcToPoint(Offset(radius, 0),clockwise: true, radius: Radius.circular(radius));
+
+    path.lineTo(width - radius, 0);
+    path.arcToPoint(Offset(width, radius),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo(width, height - radius);
+    path.arcToPoint(Offset(width - radius, height),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo((3 * width / 5), height);
+    path.lineTo(width / 2, height + 20);
+    path.lineTo((2 * width / 5), height);
+    path.lineTo(radius, height);
+    path.arcToPoint(Offset(0, height - radius),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo(0, radius);
+
+//    path.relativeConicTo(0, 0, width, 0, 10);
+//    path.relativeConicTo(width, 0, width, height, 10);
+//    path.relativeConicTo(width / 2, height, width, height, 10);
+//    path.addRRect(
+//        RRect.fromRectAndRadius(Rect.fromLTWH(0.0,
+//          0.0,
+//          width,
+//          height,), Radius.circular(16))
+//    );
+//    path.conicTo((3*width/4), height, (width/4), height, 1);
+    canvas.drawPath(path, rectOutlinePaint);
+//    canvas.drawPath(path, rectPaint);
+//    canvas.drawRRect(
+//        RRect.fromLTRBAndCorners(
+//          0.0,
+//          0.0,
+//          105.0 + (busNumber.length * 5.75),
+//          120.0,
+//          bottomRight: const Radius.circular(4),
+//          topLeft: const Radius.circular(4),
+//          topRight: const Radius.circular(4),
+//          bottomLeft: const Radius.circular(4)
+//        ),
+//        rectOutlinePaint);
+
+//    canvas.drawImageRect(image, inputSubrect, outputSubrect, imagePaint);
+//    canvas.drawRect(rect, paint)
+
+    textPainter.layout();
+    textPainter.paint(canvas, textOffset);
+
+    final ui.Picture picture = recorder.endRecording();
+
+    final ByteData pngBytes = await picture
+        .toImage(512, 512)
+        .then((image) => image.toByteData(format: ui.ImageByteFormat.png));
+
+    picture.dispose();
+    return pngBytes;
+  }
+
+  Future<void> _onMapCreated(GoogleMapController controller) async{
     _markers.clear();
     for (final post in postsMap) {
-      print("start");
       BitmapDescriptor bitmapDescriptor = await _capturePng();
-      print("continue");
       final marker = Marker(
           markerId: MarkerId("${post.id}"),
           position: LatLng(post.lat, post.lng),
@@ -82,26 +214,35 @@ class _MapsState extends State<MapsScreen> {
     });
   }
 
-  Future<BitmapDescriptor> _capturePng() async {
-    print("data: _capturePng");
-    try {
-      RenderRepaintBoundary boundary =
-      _globalKey.currentContext.findRenderObject();
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData byteData =
-      await image.toByteData(format: ui.ImageByteFormat.png);
-      var pngBytes = byteData.buffer.asUint8List();
-      Uint8List data = Uint8List.view(pngBytes.buffer);
-      var bs64 = base64Encode(pngBytes);
-      print("data: ${pngBytes}");
-      print("bs64: ${bs64}");
 
-      return BitmapDescriptor.fromBytes(data);
-    } catch (e) {
-      print("error: ${e}");
+  Future<BitmapDescriptor> _capturePng() async {
+
+//    ui.Image image;
+    bool catched = true;
+//    RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
+//    print("data: ${boundary.debugNeedsPaint}");
+//    if(!boundary.debugNeedsPaint) {
+//      image = await boundary.toImage();
+//      catched = true;
+//    } else{
+//      catched = false;
+//      Timer(Duration(milliseconds: 1), () {
+//        _capturePng();
+//      });
+//    }
+    if (catched) {
+      try {
+        ByteData byteData = await customBusMarkerData("", "POSTS");
+        Uint8List pngBytes = byteData.buffer.asUint8List();
+        String base64Image = base64Encode(pngBytes);
+        Uint8List data = Uint8List.view(pngBytes.buffer);
+        return BitmapDescriptor.fromBytes(data);
+      } catch (e) {
+        print("error: ${e}");
+      }
+
     }
   }
-
 
   void _createMarker(String mkId, double lat, double lng) {
     setState(() {
@@ -112,8 +253,6 @@ class _MapsState extends State<MapsScreen> {
     });
   }
 }
-
-
 
 
 Widget getHeaderDrafts(BuildContext context) {
