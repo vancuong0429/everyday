@@ -197,9 +197,8 @@ Widget profileHeader() {
             right: 0,
             child: Container(
               height: 260,
-              padding: EdgeInsets.all(10),
               child: ClipPath(
-                clipper: CustomText(),
+                clipper: CustomClipTop(),
                 child: Container(
                   color: Colors.white,
                   padding: EdgeInsets.only(top: 92),
