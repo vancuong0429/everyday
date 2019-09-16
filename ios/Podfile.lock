@@ -1,0 +1,45 @@
+PODS:
+  - Flutter (1.0.0)
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (3.4.0):
+    - GoogleMaps/Maps (= 3.4.0)
+  - GoogleMaps/Base (3.4.0)
+  - GoogleMaps/Maps (3.4.0):
+    - GoogleMaps/Base
+  - image_picker_modern (0.0.1):
+    - Flutter
+  - permission_handler (3.2.0):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - image_picker_modern (from `.symlinks/plugins/image_picker_modern/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GoogleMaps
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
+  image_picker_modern:
+    :path: ".symlinks/plugins/image_picker_modern/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  google_maps_flutter: 78a52114c898b42ea647919679a4c58b70abe876
+  GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
+  image_picker_modern: 40bc7d164e23451a0417e302e514746a2b81c269
+  permission_handler: d4838243e7d0f4b18911a6422d81e7e6b71ad545
+
+PODFILE CHECKSUM: 8b2c6ed1dc9005f1bf6a7509a6504ab916584b8c
+
+COCOAPODS: 1.7.5

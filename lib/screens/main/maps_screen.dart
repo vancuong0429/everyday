@@ -33,7 +33,7 @@ class MapsScreen extends StatefulWidget {
 class _MapsState extends State<MapsScreen> {
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(10.8052611, 106.6290739),
-    zoom: 14.4746,
+    zoom: 17,
   );
   Map<String, Marker> _markers = {};
   @override
@@ -71,12 +71,10 @@ class _MapsState extends State<MapsScreen> {
     return await Image(image: AssetImage(path),);
   }
 
-  Future<ByteData> customBusMarkerData(
-      String assetImagePath, String busNumber) async {
+  Future<ByteData> customBusMarkerData(String assetImagePath, String busNumber) async {
 //    final Offset imageOffset =
 //    Offset(18.0 + (2.5 * (busNumber.length - 1.0)), 50);
-    final Offset textOffset =
-    Offset(39.5 - (12.75 * (busNumber.length - 1.0)), 0.0);
+
 
     final ui.PictureRecorder recorder = ui.PictureRecorder();
 
@@ -85,6 +83,15 @@ class _MapsState extends State<MapsScreen> {
 //    final Paint imagePaint = Paint()
 //      ..isAntiAlias = true
 //      ..filterQuality = FilterQuality.high;
+
+    var dpr = ui.window.devicePixelRatio;
+    Path path = Path();
+    var width = 70.0 * dpr;
+    var height = 78.0 * dpr;
+    var radius = 10.0;
+    var margin = 5.0;
+
+
 
     final Paint rectPaint = Paint()
       ..color = Colors.white
@@ -108,7 +115,14 @@ class _MapsState extends State<MapsScreen> {
     final TextPainter textPainter = TextPainter(
         text: textSpan,
         textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center);
+        textAlign: TextAlign.right);
+    textPainter.layout(
+      minWidth: width,
+      maxWidth: width
+    );
+
+    final Offset textOffset =
+    Offset(0, height / 2);
 //    final ui.Image image =
 
 //    final Size sourceImageSize =
@@ -137,23 +151,20 @@ class _MapsState extends State<MapsScreen> {
 //        ),
 //        rectPaint);
 
-    Path path = Path();
-    var width = 130.0;
-    var height = 150.0 - 20;
-    var radius = 10.0;
-    path.moveTo(0, radius);
-    path.arcToPoint(Offset(radius, 0),clockwise: true, radius: Radius.circular(radius));
 
-    path.lineTo(width - radius, 0);
-    path.arcToPoint(Offset(width, radius),clockwise: true, radius: Radius.circular(radius));
+    path.moveTo(0 + margin, radius + margin);
+    path.arcToPoint(Offset(radius + margin , 0 + margin),clockwise: true, radius: Radius.circular(radius));
+
+    path.lineTo(width - radius, 0 + margin);
+    path.arcToPoint(Offset(width, radius + margin),clockwise: true, radius: Radius.circular(radius));
     path.lineTo(width, height - radius);
     path.arcToPoint(Offset(width - radius, height),clockwise: true, radius: Radius.circular(radius));
     path.lineTo((3 * width / 5), height);
     path.lineTo(width / 2, height + 20);
     path.lineTo((2 * width / 5), height);
-    path.lineTo(radius, height);
-    path.arcToPoint(Offset(0, height - radius),clockwise: true, radius: Radius.circular(radius));
-    path.lineTo(0, radius);
+    path.lineTo(radius + margin, height);
+    path.arcToPoint(Offset(0 + margin, height - radius),clockwise: true, radius: Radius.circular(radius));
+    path.lineTo(0 + margin, radius + margin);
 
 //    path.relativeConicTo(0, 0, width, 0, 10);
 //    path.relativeConicTo(width, 0, width, height, 10);
@@ -165,6 +176,7 @@ class _MapsState extends State<MapsScreen> {
 //          height,), Radius.circular(16))
 //    );
 //    path.conicTo((3*width/4), height, (width/4), height, 1);
+
     canvas.drawPath(path, rectOutlinePaint);
 //    canvas.drawPath(path, rectPaint);
 //    canvas.drawRRect(
@@ -187,9 +199,10 @@ class _MapsState extends State<MapsScreen> {
     textPainter.paint(canvas, textOffset);
 
     final ui.Picture picture = recorder.endRecording();
+    print("dpr: $dpr");
 
     final ByteData pngBytes = await picture
-        .toImage(512, 512)
+        .toImage(((width + 10) * dpr).toInt(), (height * dpr).toInt())
         .then((image) => image.toByteData(format: ui.ImageByteFormat.png));
 
     picture.dispose();

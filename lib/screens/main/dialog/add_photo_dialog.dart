@@ -4,7 +4,7 @@ import 'package:everyday/model/FileModel.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
-import 'package:storage_path/storage_path.dart';
+//import 'package:storage_path/storage_path.dart';
 
 
 
@@ -19,25 +19,25 @@ class AddPhotoDialog extends StatefulWidget{
 class _AddPhotoState extends State<AddPhotoDialog>{
   List<File> _fileImages = [];
   Future getImage() async {
-    var imagesPath;
-    try {
-      imagesPath = await StoragePath.imagesPath;
-      var response = jsonDecode(imagesPath);
-      var imageList = response as List;
-      List<FileModel> folders = imageList.map<FileModel>((json) => FileModel.fromJson(json)).toList();
-      List<File> files = [];
-      folders.forEach((itemFolder) {
-        itemFolder.files.forEach((path) {
-          files.add(File(path));
-        });
-      });
-      setState(() {
-        _fileImages.clear();
-        _fileImages = files;
-      });//contains images path and folder name in json format
-    } on PlatformException {
-      print("error");
-    }
+//    var imagesPath;
+//    try {
+//      imagesPath = await StoragePath.imagesPath;
+//      var response = jsonDecode(imagesPath);
+//      var imageList = response as List;
+//      List<FileModel> folders = imageList.map<FileModel>((json) => FileModel.fromJson(json)).toList();
+//      List<File> files = [];
+//      folders.forEach((itemFolder) {
+//        itemFolder.files.forEach((path) {
+//          files.add(File(path));
+//        });
+//      });
+//      setState(() {
+//        _fileImages.clear();
+//        _fileImages = files;
+//      });//contains images path and folder name in json format
+//    } on PlatformException {
+//      print("error");
+//    }
   }
 
   @override
