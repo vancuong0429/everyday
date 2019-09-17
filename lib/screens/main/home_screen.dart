@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,11 +10,13 @@ class _HomeState extends State<HomeScreen> {
   double screenHeight;
   double screenWidth;
   Widget _list;
+  final double ratio = ui.window.devicePixelRatio;
 
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+    print("ratio1: ${MediaQuery.of(context).devicePixelRatio}");
     if (_list == null) {
       _list = new ListView.builder(
         itemCount: 10,
@@ -24,6 +27,7 @@ class _HomeState extends State<HomeScreen> {
     // TODO: implement build
     return Scaffold(
       body: Container(
+        color: Color(0xFFF5F5F5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -101,9 +105,7 @@ class _HomeState extends State<HomeScreen> {
               ),
             ),
             Container(
-              color: Colors.white,
-              height: 169,
-              padding: EdgeInsets.only(top: 33, left: 16, bottom: 38),
+              padding: EdgeInsets.only(top: 30, left: 16, bottom: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -124,9 +126,14 @@ class _HomeState extends State<HomeScreen> {
                           ))
                     ],
                   ),
-                  Expanded(child: _list)
+
                 ],
               ),
+            ),
+            Container(
+                height: 90,
+                margin: EdgeInsets.only(bottom: 38),
+                child: _list
             )
           ],
         ),
@@ -168,38 +175,52 @@ class _HomeState extends State<HomeScreen> {
   }
 
   Widget getBuilder(BuildContext context, int index) {
-    return Card(
-      child: Container(
-        width: screenWidth * 0.3,
-        padding: EdgeInsets.only(top: 3, left: 10, bottom: 10, right: 10),
-        child: Column(
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "03",
-                  style: TextStyle(
-                    color: Color(0xFF82A0FA),
-                    fontSize: 28,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 8),
-                  child: Text(
-                    "TUE",
-                    style: TextStyle(color: Color(0xFFC8C8C8), fontSize: 10),
-                  ),
-                )
-              ],
-            ),
-            Text(
-              "A slow but sure start.",
-              style: TextStyle(color: Color(0xFF666666), fontSize: 12),
-              maxLines: 2,
+    return Container(
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(6)),
+        color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 6, // has the effect of softening the shadow
+              spreadRadius: -4, // has the effect of extending the shadow
+              offset: Offset(
+                0, // horizontal, move right 10
+                0, // vertical, move down 10
+              ),
             )
-          ],
-        ),
+          ]
+      ),
+      padding: EdgeInsets.only(top: 4, left: 10, bottom: 10, right: 10),
+      margin: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+      child: Column(
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "03",
+                style: TextStyle(
+                  color: Color(0xFF82A0FA),
+                  fontSize: 28,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 8),
+                child: Text(
+                  "TUE",
+                  style: TextStyle(color: Color(0xFFC8C8C8), fontSize: 10),
+                ),
+              )
+            ],
+          ),
+          Text(
+            "A slow but sure start.",
+            style: TextStyle(color: Color(0xFF666666), fontSize: 12),
+            maxLines: 2,
+          )
+        ],
       ),
     );
   }
