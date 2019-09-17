@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,10 +17,10 @@ class PostMap {
 }
 
 const List<PostMap> postsMap = const <PostMap>[
-  const PostMap(id: 1, title: '01 POST', lat: 10.8052611, lng: 106.6290739),
-  const PostMap(id: 2, title: '02 POST', lat: 10.8041135, lng: 106.6290588),
-  const PostMap(id: 3, title: '03 POST', lat: 10.8062373, lng: 106.6287629),
-  const PostMap(id: 4, title: '04 POST', lat: 10.8048587, lng: 106.6285429),
+  const PostMap(id: 1, title: '01', lat: 10.8052611, lng: 106.6290739),
+  const PostMap(id: 2, title: '02', lat: 10.8041135, lng: 106.6290588),
+  const PostMap(id: 3, title: '03', lat: 10.8062373, lng: 106.6287629),
+  const PostMap(id: 4, title: '04', lat: 10.8048587, lng: 106.6285429),
 ];
 
 class MapsScreen extends StatefulWidget {
@@ -33,7 +31,7 @@ class MapsScreen extends StatefulWidget {
 class _MapsState extends State<MapsScreen> {
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(10.8052611, 106.6290739),
-    zoom: 17,
+    zoom: 14,
   );
   Map<String, Marker> _markers = {};
   @override
@@ -67,29 +65,21 @@ class _MapsState extends State<MapsScreen> {
     );
   }
 
-  Future<prefix0.Image> loadAsset(String path) async {
-    return await Image(image: AssetImage(path),);
-  }
-
-  Future<ByteData> customBusMarkerData(String assetImagePath, String busNumber) async {
-//    final Offset imageOffset =
-//    Offset(18.0 + (2.5 * (busNumber.length - 1.0)), 50);
-
+  Future<ByteData> customMarkerData(String title) async {
 
     final ui.PictureRecorder recorder = ui.PictureRecorder();
 
     final Canvas canvas = Canvas(recorder);
 
-//    final Paint imagePaint = Paint()
-//      ..isAntiAlias = true
-//      ..filterQuality = FilterQuality.high;
-
-    var dpr = ui.window.devicePixelRatio;
+    final double ratio = ui.window.devicePixelRatio;
     Path path = Path();
-    var width = 70.0 * dpr;
-    var height = 78.0 * dpr;
-    var radius = 10.0;
+    var width = 70.0 * ratio;
+    var height = 78.0 * ratio;
+    var radius = 4 * ratio;
+    var sizeArrow = 10 * ratio;
+
     var margin = 5.0;
+    var widthMargin = width - margin;
 
 
 
@@ -100,56 +90,35 @@ class _MapsState extends State<MapsScreen> {
       ..filterQuality = FilterQuality.high;
 
     final Paint rectOutlinePaint = Paint()
-      ..color = Colors.red
+      ..color = Colors.black
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 5
       ..strokeCap = ui.StrokeCap.round
-      ..filterQuality = FilterQuality.high;
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6);
 
     final TextSpan textSpan = TextSpan(
-      style: const TextStyle(
-          color: Color(0xFF82A0FA), fontSize: 28, fontWeight: FontWeight.bold),
-      text: busNumber,
+      children: [
+        TextSpan(style: TextStyle(letterSpacing: 0,
+            color: Color(0x8082A0FA), fontSize: ratio * 28),
+        text: title)
+      ],
     );
     final TextPainter textPainter = TextPainter(
         text: textSpan,
         textDirection: TextDirection.ltr,
-        textAlign: TextAlign.right);
-    textPainter.layout(
-      minWidth: width,
-      maxWidth: width
+        textAlign: TextAlign.center);
+
+    final TextSpan textPostSpan = TextSpan(
+      children: [
+        TextSpan(style: TextStyle(letterSpacing: 0,
+            color: Color(0x8082A0FA), fontSize: ratio * 12),
+            text: "POST")
+      ],
     );
-
-    final Offset textOffset =
-    Offset(0, height / 2);
-//    final ui.Image image =
-
-//    final Size sourceImageSize =
-//    Size(50, 50);
-//    final Size wantedImageSize = sourceImageSize * 1.5;
-//
-//    final ui.Rect inputRect = Offset.zero & sourceImageSize;
-//    final ui.Rect outputRect = imageOffset & wantedImageSize;
-//
-//    final FittedSizes sizes =
-//    applyBoxFit(BoxFit.contain, sourceImageSize, wantedImageSize);
-
-//    final Rect inputSubrect = Alignment.center.inscribe(sizes.source, inputRect);
-//
-//    final Rect outputSubrect =
-//    Alignment.center.inscribe(sizes.destination, outputRect);
-
-//    canvas.drawRRect(
-//        RRect.fromLTRBAndCorners(
-//          0.0,
-//          0.0,
-//          105.0 + (busNumber.length * 5.75),
-//          120.0,
-//          bottomRight: const Radius.circular(25),
-//          topLeft: const Radius.circular(25),
-//        ),
-//        rectPaint);
+    final TextPainter textPostPainter = TextPainter(
+        text: textPostSpan,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center);
 
 
     path.moveTo(0 + margin, radius + margin);
@@ -159,50 +128,30 @@ class _MapsState extends State<MapsScreen> {
     path.arcToPoint(Offset(width, radius + margin),clockwise: true, radius: Radius.circular(radius));
     path.lineTo(width, height - radius);
     path.arcToPoint(Offset(width - radius, height),clockwise: true, radius: Radius.circular(radius));
-    path.lineTo((3 * width / 5), height);
-    path.lineTo(width / 2, height + 20);
-    path.lineTo((2 * width / 5), height);
+    path.lineTo((3 * widthMargin / 5), height);
+    path.lineTo(widthMargin / 2, height + sizeArrow);
+    path.lineTo((2 * widthMargin / 5), height);
     path.lineTo(radius + margin, height);
     path.arcToPoint(Offset(0 + margin, height - radius),clockwise: true, radius: Radius.circular(radius));
     path.lineTo(0 + margin, radius + margin);
 
-//    path.relativeConicTo(0, 0, width, 0, 10);
-//    path.relativeConicTo(width, 0, width, height, 10);
-//    path.relativeConicTo(width / 2, height, width, height, 10);
-//    path.addRRect(
-//        RRect.fromRectAndRadius(Rect.fromLTWH(0.0,
-//          0.0,
-//          width,
-//          height,), Radius.circular(16))
-//    );
-//    path.conicTo((3*width/4), height, (width/4), height, 1);
-
     canvas.drawPath(path, rectOutlinePaint);
-//    canvas.drawPath(path, rectPaint);
-//    canvas.drawRRect(
-//        RRect.fromLTRBAndCorners(
-//          0.0,
-//          0.0,
-//          105.0 + (busNumber.length * 5.75),
-//          120.0,
-//          bottomRight: const Radius.circular(4),
-//          topLeft: const Radius.circular(4),
-//          topRight: const Radius.circular(4),
-//          bottomLeft: const Radius.circular(4)
-//        ),
-//        rectOutlinePaint);
-
-//    canvas.drawImageRect(image, inputSubrect, outputSubrect, imagePaint);
-//    canvas.drawRect(rect, paint)
+    canvas.drawPath(path, rectPaint);
 
     textPainter.layout();
+    final Offset textOffset =
+    Offset((widthMargin / 2) - (textPainter.width / 2), (height / 2) - (3 * textPainter.height / 4));
     textPainter.paint(canvas, textOffset);
 
+    textPostPainter.layout();
+    final Offset textPostOffset =
+    Offset((widthMargin / 2) - (textPostPainter.width / 2), (height / 2) +  (textPostPainter.height / 4));
+    textPostPainter.paint(canvas, textPostOffset);
+
     final ui.Picture picture = recorder.endRecording();
-    print("dpr: $dpr");
 
     final ByteData pngBytes = await picture
-        .toImage(((width + 10) * dpr).toInt(), (height * dpr).toInt())
+        .toImage(((width) * ratio).toInt(), (height * ratio).toInt())
         .then((image) => image.toByteData(format: ui.ImageByteFormat.png));
 
     picture.dispose();
@@ -212,13 +161,10 @@ class _MapsState extends State<MapsScreen> {
   Future<void> _onMapCreated(GoogleMapController controller) async{
     _markers.clear();
     for (final post in postsMap) {
-      BitmapDescriptor bitmapDescriptor = await _capturePng();
+      BitmapDescriptor bitmapDescriptor = await _capturePng(post.title);
       final marker = Marker(
           markerId: MarkerId("${post.id}"),
           position: LatLng(post.lat, post.lng),
-          infoWindow: InfoWindow(
-            title: post.title,
-          ),
           icon: bitmapDescriptor
       );
       _markers["${post.id}"] = marker;
@@ -228,42 +174,15 @@ class _MapsState extends State<MapsScreen> {
   }
 
 
-  Future<BitmapDescriptor> _capturePng() async {
-
-//    ui.Image image;
-    bool catched = true;
-//    RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
-//    print("data: ${boundary.debugNeedsPaint}");
-//    if(!boundary.debugNeedsPaint) {
-//      image = await boundary.toImage();
-//      catched = true;
-//    } else{
-//      catched = false;
-//      Timer(Duration(milliseconds: 1), () {
-//        _capturePng();
-//      });
-//    }
-    if (catched) {
-      try {
-        ByteData byteData = await customBusMarkerData("", "POSTS");
-        Uint8List pngBytes = byteData.buffer.asUint8List();
-        String base64Image = base64Encode(pngBytes);
-        Uint8List data = Uint8List.view(pngBytes.buffer);
-        return BitmapDescriptor.fromBytes(data);
-      } catch (e) {
-        print("error: ${e}");
-      }
-
+  Future<BitmapDescriptor> _capturePng(String title) async {
+    try {
+      ByteData byteData = await customMarkerData(title);
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      Uint8List data = Uint8List.view(pngBytes.buffer);
+      return BitmapDescriptor.fromBytes(data);
+    } catch (e) {
+      print("error: $e");
     }
-  }
-
-  void _createMarker(String mkId, double lat, double lng) {
-    setState(() {
-      _markers[mkId] = Marker(
-        markerId: MarkerId(mkId),
-        position: LatLng(lat, lng),
-      );
-    });
   }
 }
 
