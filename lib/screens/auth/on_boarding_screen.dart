@@ -5,6 +5,7 @@ import 'package:page_indicator/page_indicator.dart';
 import 'package:everyday/screens/widgets/on_boarding_one.dart';
 
 import 'package:everyday/screens/main/main_screen.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class OnBoardingScreen extends StatefulWidget{
   @override
@@ -57,7 +58,8 @@ class _OnBoardingState extends State<OnBoardingScreen>{
                     height: 48,
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
+                        initiateFacebookLogin();
+//                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,6 +101,32 @@ class _OnBoardingState extends State<OnBoardingScreen>{
         ),
       ),
     );
+  }
+
+  void onLoginStatusChanged(bool isLoggedIn) {
+    setState(() {
+
+    });
+  }
+
+  void initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult =
+    await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        onLoginStatusChanged(true);
+        break;
+    }
   }
 
 }
