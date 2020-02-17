@@ -3,6 +3,9 @@ import 'package:floor/floor.dart';
 
 @dao
 abstract class UserDao {
-  @insert
+  @Insert(onConflict: OnConflictStrategy.REPLACE)
   Future<void> insertUser(UserEntity userEntity);
+
+  @Query('Select * from UserEntity')
+  Future<UserEntity> getUser();
 }

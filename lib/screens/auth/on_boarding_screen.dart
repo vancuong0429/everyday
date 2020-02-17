@@ -127,7 +127,8 @@ class _OnBoardingState extends State<OnBoardingScreen> {
   }
 
   void createUser(String userId, String email, String name, String avatar) {
-    _registerBloc.registerUserByFacebook(userId, email, name, avatar).then((value) {
+    _registerBloc.registerUserByFacebook(userId, email, name, avatar).then((value) async {
+      await _registerBloc.insertUser(userId, name);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => MainScreen()));
     });

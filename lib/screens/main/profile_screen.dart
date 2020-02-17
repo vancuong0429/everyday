@@ -1,3 +1,5 @@
+import 'package:everyday/blocs/ProfileBloc.dart';
+import 'package:everyday/provider/UserEntity.dart';
 import 'package:everyday/screens/main/drafts_screen.dart';
 import 'package:everyday/screens/main/maps_screen.dart';
 import 'package:everyday/screens/main/photos_screen.dart';
@@ -9,6 +11,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfileScreen> {
+  ProfileBloc _profileBloc = ProfileBloc();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _profileBloc.getUser();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +29,16 @@ class _ProfileState extends State<ProfileScreen> {
         child: Container(
           child: Column(
             children: <Widget>[
-              profileHeader(),
+              StreamBuilder(
+                stream: _profileBloc.userStream,
+                builder: (context, snapshot) {
+                  print("snapshot: $snapshot");
+                  if(snapshot.hasData) {
+                    return profileHeader(snapshot.data);
+                  }
+                  return profileHeader(null);
+                },
+              ),
               Expanded(
                 child: GridView.count(crossAxisCount: 3,
                 padding: EdgeInsets.all(8),
@@ -36,26 +55,6 @@ class _ProfileState extends State<ProfileScreen> {
     );
   }
 }
-
-//Positioned(
-//left: 0,
-//top: 405,
-//child: InkWell(
-//onTap: () {},
-//child: Container(
-//height: 40,
-//decoration: BoxDecoration(
-//color: Colors.white,
-//borderRadius: BorderRadius.circular(100)
-//),
-//child: SizedBox(
-//child: Center(
-//child: Text("FOLLOW", style: TextStyle(color: Colors.green, fontSize: 16),),
-//),
-//),
-//),
-//),
-//)
 
 class Choice {
   const Choice({this.title, this.icon});
@@ -171,7 +170,7 @@ class CustomClipTop extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
-Widget profileHeader() {
+Widget profileHeader(UserEntity userEntity) {
 
   return Container(
     width: double.infinity,
@@ -204,7 +203,7 @@ Widget profileHeader() {
                   padding: EdgeInsets.only(top: 92),
                   child: Column(
                     children: <Widget>[
-                      Text("Rejo Varghese", style: TextStyle(color: Color(0xFF666666), fontSize: 24),),
+                      Text(userEntity != null ? userEntity.name : "", style: TextStyle(color: Color(0xFF666666), fontSize: 24),),
                       SizedBox(height: 14,),
                       Text("There is only one happiness in this life,\nto love and be loved.",
                         style: TextStyle(color: Color(0xFFBBBBBB), fontSize: 14, fontStyle: FontStyle.italic), maxLines: 2,

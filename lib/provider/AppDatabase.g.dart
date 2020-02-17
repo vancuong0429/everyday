@@ -81,7 +81,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `UserEntity` (`userId` INTEGER, `name` TEXT, PRIMARY KEY (`userId`))');
+            'CREATE TABLE IF NOT EXISTS `UserEntity` (`userId` TEXT, `name` TEXT, PRIMARY KEY (`userId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -96,7 +96,8 @@ class _$AppDatabase extends AppDatabase {
 
 class _$UserDao extends UserDao {
   _$UserDao(this.database, this.changeListener)
-      : _userEntityInsertionAdapter = InsertionAdapter(
+      : _queryAdapter = QueryAdapter(database),
+        _userEntityInsertionAdapter = InsertionAdapter(
             database,
             'UserEntity',
             (UserEntity item) =>
@@ -106,7 +107,18 @@ class _$UserDao extends UserDao {
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
+  static final _userEntityMapper = (Map<String, dynamic> row) =>
+      UserEntity(row['userId'] as String, row['name'] as String);
+
   final InsertionAdapter<UserEntity> _userEntityInsertionAdapter;
+
+  @override
+  Future<UserEntity> getUser() async {
+    return _queryAdapter.query('Select * from UserEntity',
+        mapper: _userEntityMapper);
+  }
 
   @override
   Future<void> insertUser(UserEntity userEntity) async {
