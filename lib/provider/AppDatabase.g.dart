@@ -121,8 +121,28 @@ class _$UserDao extends UserDao {
   }
 
   @override
+  Future<void> deleteUser(String userEntity) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM UserEntity where userId = ?',
+        arguments: <dynamic>[userEntity]);
+  }
+
+  @override
   Future<void> insertUser(UserEntity userEntity) async {
     await _userEntityInsertionAdapter.insert(
         userEntity, sqflite.ConflictAlgorithm.abort);
+  }
+
+  @override
+  Future<void> replaceUser(UserEntity userEntity) async {
+    if (database is sqflite.Transaction) {
+      await super.replaceUser(userEntity);
+    } else {
+      await (database as sqflite.Database)
+          .transaction<void>((transaction) async {
+        final transactionDatabase = _$AppDatabase(changeListener)
+          ..database = transaction;
+        await transactionDatabase.userDao.replaceUser(userEntity);
+      });
+    }
   }
 }

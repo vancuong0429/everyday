@@ -20,6 +20,11 @@ class RoomProvider{
     await db.userDao.insertUser(UserEntity(userId, name));
   }
 
+  Future<void> registerAndReplaceUser(String userId, String name) async{
+    final db = await database;
+    await db.userDao.replaceUser(UserEntity(userId, name));
+  }
+
   Future<UserEntity> getUser() async{
     final db = await database;
     return db.userDao.getUser();

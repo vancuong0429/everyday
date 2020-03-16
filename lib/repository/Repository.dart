@@ -11,7 +11,7 @@ class Repository {
 
   Future<void> registerUser(String userId, String email, String name, String avatar) => _firestoreProvider.registerUser(userId, email, name, avatar);
 
-  Future<void> insertUser(String userId, String name) => _roomProvider.registerUser(userId, name);
+  Future<void> insertUser(String userId, String name) => _roomProvider.registerAndReplaceUser(userId, name);
 
   Future<UserEntity> getUser(){
     return _roomProvider.getUser();
