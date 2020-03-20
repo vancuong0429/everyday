@@ -23,7 +23,6 @@ class _OnBoardingState extends State<OnBoardingScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _registerBloc = RegisterBloc();
   }

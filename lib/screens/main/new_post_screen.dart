@@ -1,3 +1,4 @@
+import 'package:everyday/blocs/PostBloc.dart';
 import 'package:everyday/screens/main/dialog/add_location_dialog.dart';
 import 'package:everyday/screens/main/dialog/add_photo_dialog.dart';
 import 'package:everyday/screens/main/dialog/select_date_dialog.dart';
@@ -12,6 +13,25 @@ class NewPostScreen extends StatefulWidget {
 
 class _NewPostState extends State<NewPostScreen> {
   var showDialog = 0;
+  PostBloc _postBloc;
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _postBloc = PostBloc();
+
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    titleController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -98,7 +118,7 @@ class _NewPostState extends State<NewPostScreen> {
                                         color: Color(0xFF999999), fontSize: 14),
                                   )),
                               onTap: () {
-                                Navigator.pop(context);
+                                createPost(titleController.text, contentController.text);
                               },
                             ),
                             Text(
@@ -138,6 +158,7 @@ class _NewPostState extends State<NewPostScreen> {
                                 Container(
                                   margin: EdgeInsets.only(left: 17),
                                   child: TextField(
+                                    controller: titleController,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: "Add a title",
@@ -151,6 +172,7 @@ class _NewPostState extends State<NewPostScreen> {
                                   child: Container(
                                     margin: EdgeInsets.only(left: 17, top: 15),
                                     child: TextField(
+                                      controller: contentController,
                                       keyboardType: TextInputType.multiline,
                                       maxLines: null,
                                       decoration: InputDecoration(
@@ -179,6 +201,13 @@ class _NewPostState extends State<NewPostScreen> {
         ),
       ),
     );
+  }
+
+  void createPost(String title, String content) {
+    int currentDate = DateTime.now().millisecondsSinceEpoch;
+    _postBloc.createPost(currentDate, title, content).then((value) async {
+        Navigator.pop(context);
+    });
   }
 
   closeDialog() {

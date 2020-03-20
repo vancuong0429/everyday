@@ -62,6 +62,8 @@ class _$AppDatabase extends AppDatabase {
 
   UserDao _userDaoInstance;
 
+  PostDao _postDaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback callback]) async {
     return sqflite.openDatabase(
@@ -82,6 +84,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `UserEntity` (`userId` TEXT, `name` TEXT, PRIMARY KEY (`userId`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `post` (`date` INTEGER, `title` TEXT, `content` TEXT, PRIMARY KEY (`date`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -91,6 +95,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   UserDao get userDao {
     return _userDaoInstance ??= _$UserDao(database, changeListener);
+  }
+
+  @override
+  PostDao get postDao {
+    return _postDaoInstance ??= _$PostDao(database, changeListener);
   }
 }
 
@@ -144,5 +153,40 @@ class _$UserDao extends UserDao {
         await transactionDatabase.userDao.replaceUser(userEntity);
       });
     }
+  }
+}
+
+class _$PostDao extends PostDao {
+  _$PostDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _postEntityInsertionAdapter = InsertionAdapter(
+            database,
+            'post',
+            (PostEntity item) => <String, dynamic>{
+                  'date': item.date,
+                  'title': item.title,
+                  'content': item.content
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  static final _postMapper = (Map<String, dynamic> row) => PostEntity(
+      row['date'] as int, row['title'] as String, row['content'] as String);
+
+  final InsertionAdapter<PostEntity> _postEntityInsertionAdapter;
+
+  @override
+  Future<List<PostEntity>> getPost() async {
+    return _queryAdapter.queryList('Select * from post', mapper: _postMapper);
+  }
+
+  @override
+  Future<void> insertPost(PostEntity postEntity) async {
+    await _postEntityInsertionAdapter.insert(
+        postEntity, sqflite.ConflictAlgorithm.abort);
   }
 }
